@@ -19,16 +19,11 @@ from PyQt4.QtGui import *
 
 class Form(QDialog):
     def __init__(self, parent=None):
-        self.components = {"HCL":36.5,
-                      "SO2":64,
-                      "CO":28,
-                      "NO":30,
-                      "NO2":46,
-                      "HF":23,
-                      "CH4":16}
+        self.components = {}
+        self.components = self.getData()
         super(Form, self).__init__(parent)
         titleLabel = QLabel("ppm and mg/m3 单位转换")
-        componentsList = list(self.components.keys())
+        componentsList = sorted(self.components.keys())
         self.componComboBox = QComboBox()
         self.componComboBox.addItems(componentsList)
         self.componSpinBox = QDoubleSpinBox()
@@ -52,7 +47,12 @@ class Form(QDialog):
         amount = (self.components[MW] / 22.4) * self.componSpinBox.value()
         self.calLabel.setText("%0.2f" % amount)
 
-
+    def getData(self):
+        with open("Components MW") as f:
+            for line in f:
+                key, value = line.rsplit(None, 1)
+                self.components[key] = float(value)
+        return self.components
 
 app = QApplication(sys.argv)
 form = Form()
