@@ -5,7 +5,7 @@
 """
 @version: 1.00
 @author: phpergao
-@license: Apache Licence 
+@license: Apache Licence
 @contact: endoffight@gmail.com
 @site: http://
 @software: PyCharm
@@ -19,9 +19,9 @@ from PyQt4.QtGui import *
 
 class Form(QDialog):
     def __init__(self, parent=None):
+        super(Form, self).__init__(parent)
         self.components = {}
         self.components = self.getData()
-        super(Form, self).__init__(parent)
         titleLabel = QLabel("ppm and mg/m3 单位转换")
         componentsList = sorted(self.components.keys())
         self.componComboBox = QComboBox()
