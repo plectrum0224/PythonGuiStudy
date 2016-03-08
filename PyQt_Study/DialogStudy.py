@@ -48,18 +48,58 @@ class PenPropertiesDlg(QDialog):
                      self, SLOT("reject()"))
         self.setWindowTitle("Pen PenProperties")
 
+class Form(QDialog):
+    def __init__(self, parent=None):
+        super(Form, self).__init__(parent)
+
+        self.width = 10
+        self.beveled = False
+        self.style = "Solid"
+
+        # penButtonInline = QPushButton("Set Pen ....")
+        penButton = QPushButton("Set Pen....Dumb Dialog Panel")
+        self.label = QLabel("The Pen has not been set")
+        self.label.setTextFormat(Qt.RichText)
+
+        layout = QVBoxLayout()
+        # layout.addWidget(penButtonInline)
+        layout.addWidget(penButton)
+        layout.addWidget(self.label)
+        self.setLayout(layout)
+
+        # self.connect(penButtonInline, SIGNAL("clicked()"),
+        #              self.setPenInline)
+        self.connect(penButton, SIGNAL("clicked()"),
+                     self.setPenProperties)
+
+        self.setWindowTitle("Pen")
+        self.updateData()
+
+    def updateData(self):
+        bevel = ""
+        if self.beveled:
+            bevel = "<br>Beveled"
+        self.label.setText("Width = %d<br>Style = %s%s" %
+                           (self.width, self.style, bevel))
+    def setPenProperties(self):
+        dialog = PenPropertiesDlg(self)
+        dialog.widthSpinBox.setValue(self.width)
+        dialog.beveledCheckBox.setChecked(self.beveled)
+        dialog.styleComboBox.setCurrentIndex(
+                                             dialog.styleComboBox.findText(self.style))
+        if dialog.exec_():
+            self.width = dialog.widthSpinBox.value()
+            self.beveled = dialog.beveledCheckBox.isChecked()
+            self.style = str(dialog.styleComboBox.currentText())
+            self.updateData()
+
+
+
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    dialog = PenPropertiesDlg()
-    if dialog.exec_():
-        dialog.widthSpinBox.setValue(width)
-        dialog.beveledCheckBox.setChecked(beveled)
-        dialog.styleComboBox.setCurrentIndex(dialog.styleComboBox.findText(style))
-        dialog.show()
-        print(dialog.widthSpinBox.value())
-        beveled = dialog.beveledCheckBox.isChecked()
-        style = str(dialog.styleComboBox.currentText())
+    form = Form()
+    form.show()
     app.exec_()
 
