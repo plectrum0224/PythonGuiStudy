@@ -15,9 +15,8 @@ import string
 import sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import numberformatdlg1
-import numberformatdlg2
-import numberformatdlg3
+
+
 
 
 class Form(QDialog):

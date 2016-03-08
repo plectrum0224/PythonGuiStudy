@@ -81,7 +81,7 @@ class NumberFormatDlg(QDialog):
             if decimal not in Punctuation:
                 raise DecimalError, ("The decimal marker must be a "
                                      "punctuation symbol.")
-        except ThousandsError, e:
+        except ThousandsError as e:
             QMessageBox.warning(self, "Thousands Separator Error",
                                 unicode(e))
             self.thousandsEdit.selectAll()
